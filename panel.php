@@ -19,7 +19,7 @@ if (isset($_REQUEST["modulo"])) {
   $modulo = $_REQUEST["modulo"];
 } else {
   //Aplicamos el módulo por defecto
-  $modulo = "estadisticas";
+  $modulo = "perfil";
 }
 
 ?>
