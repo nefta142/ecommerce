@@ -1,17 +1,17 @@
 <?php 
-
+/*
   $db_host = "localhost";
   $db_user = "webuser";
   $db_pass = "webuser";
   $db_database = "ecommerce";
   $db_port = '3306';
-/*
+*/
 $db_host = 'lantigua21.com';
 $db_user = 'lantigua21';		
 $db_pass ='Lantigua@21';
 $db_database= 'lantigua21';
 $db_port = '3306';
-*/
+
   //directivas necesarias para desactivar errores y warnings así como no detener la ejecución si hay error//
   ini_set("display_errors", 0);
   ini_set("display_startup_errors", 0);

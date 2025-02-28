@@ -1,36 +1,6 @@
-<!-- PRÁCTICA: -->
 <?php
-
-if ( isset($_SESSION["id"]) == false )
-{
-  header("location: index.php");
-}
-//Comprobamos el módulo seleccionado o lo inicializamos vacío si venimos del login
-if (isset($_REQUEST["modulo"]))
-{
-  $modulo = $_REQUEST["modulo"];
-}
-else
-{
-  //Aplicamos el módulo por defecto
-  $modulo = "estadisticas";
-} 
-if (isset($_REQUEST["mensaje"]))
-{?>
-<!-- lanzamos el mensaje si existe -->
-  <div class="alert alert-success alert-dismissible fade show float-right" role="alert">
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
-    <strong><?php print $_REQUEST["mensaje"] ?></strong> 
-  </div>
- <script>
-    $(".alert").alert();
-  </script>
-<?php } 
-
 if (isset($_REQUEST["guardar"])) {
-  include_once "db_connect.php";
+  include_once "db_ecommerce.php";
   $conexion = mysqli_connect($db_host, $db_user, $db_pass, $db_database);
   if ($conexion->connect_errno) {
     die("<p>Error de conexión Nº: $conexion->connect_errno - $conexion->connect_error</p>\n</body>\n</html>");
@@ -47,12 +17,12 @@ if (isset($_REQUEST["guardar"])) {
   if ($resultset)
   {
     print "<meta http-equiv=\"refresh\" content=\"0; url=panel.php?modulo=usuarios&mensaje=Usuario creado exitosamente\" />  ";
-    
+    //header("location: panel.php?modulo=usuarios&mensaje=Usuario creado exitosamente ");
   }
   else
   {?>
     <div class="alert alert-danger float-right" role="alert">
-      <strong>Atención! no se ha creado el usuario, El correo electronico ya esta en nuestra base de datos.<?php print mysqli_error($con) ?> </strong>
+      <strong>Atención! no se ha creado el usuario <?php print mysqli_error($con) ?> </strong>
     </div>
 <?php }
 }

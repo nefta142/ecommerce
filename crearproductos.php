@@ -1,6 +1,6 @@
 <?php
 if (isset($_REQUEST["guardar"])) {
-  include_once "db_connect.php";
+  include_once "db_ecommerce.php";
   $conexion = mysqli_connect($db_host, $db_user, $db_pass, $db_database);
   if ($conexion->connect_errno) {
     die("<p>Error de conexión Nº: $conexion->connect_errno - $conexion->connect_error</p>\n</body>\n</html>");
@@ -71,7 +71,7 @@ if (isset($_REQUEST["guardar"])) {
 
 if ($resultset)
 {
-  print "<meta http-equiv=\"refresh\" content=\"0; url=panel.php?modulo=productos_admin&mensaje=Producto creado exitosamente con id: $id_producto\" />  ";
+  print "<meta http-equiv=\"refresh\" content=\"0; url=panel.php?modulo=productos&mensaje=Producto creado exitosamente con id: $id_producto\" />  ";
 }
 else
 {?>
@@ -134,7 +134,7 @@ else
 
                 <div class="form-group">
                   <button type="submit" name="guardar" class="btn btn-primary">Guardar</button>
-                  <a class="btn btn-danger" href="panel.php?modulo=productos_admin" role="button">Cancelar</a>
+                  <a class="btn btn-danger" href="panel.php?modulo=productos" role="button">Cancelar</a>
                 </div>
               </form>
             </div>

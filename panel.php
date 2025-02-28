@@ -125,12 +125,14 @@ if (isset($_REQUEST["modulo"])) {
                     <p>Estadísticas</p>
                   </a>
                 </li>
+                <?php if($_SESSION["tipo"]=="administrador")  {  ?>
                 <li class="nav-item">
-                <a href="panel.php?modulo=usuarios" class="nav-link ">
-                  <i class="fas fa-user    ">&nbsp;</i>Usuarios
-                </a>
-               </li>
-              
+                  <a href="panel.php?modulo=usuarios" class="nav-link <?php print ($modulo == "usuarios" || $modulo == "crearusuario" || $modulo == "editarusuario") ? " active " : ""; ?> ">
+                    <i class="bi bi-person-fill nav-icon"></i>
+                    <p>Usuarios</p>
+                  </a>
+                </li>
+                <?php  } ?>
                 <li class="nav-item">
                   <a href="panel.php?modulo=clientes" class="nav-link <?php print ($modulo == "clientes") ? " active " : ""; ?> ">
                     <i class="bi bi-person-fill nav-icon"></i>
@@ -166,82 +168,78 @@ if (isset($_REQUEST["modulo"])) {
 
     <!-- CONTENIDO -->
     <?php
-     if ($modulo == "estadisticas")
-     {
-       include "estadisticas.php";
-     }
-     if ($modulo == "usuarios")
-     {
-       include "usuarios.php";
-     }
-     if ($modulo == "editarusuario")
-     {
-       include "editarusuario.php";
-     }
-    if ($modulo == "crearusuario")
-     {
-       include "crearusuario.php";
-     }
-     if ($modulo == "eliminarusuario")
-     {
-       include "eliminarusuario.php";
-     }
-     if ($modulo == "clientes")
-     {
-       include "clientes.php";
-     }
-     if ($modulo == "crearclientes")
-     {
-       include "crearclientes.php";
-     }
-     if ($modulo == "editarclientes")
-     {
-       include "editarclientes.php";
-     }
-     if ($modulo == "eliminarclientes")
-     {
-       include "eliminarclientes.php";
-     }
-     if ($modulo == "plantilla")
-     {
-       include "plantilla.php";
-     }
-     if ($modulo == "productos")
-     {
-       include "productos.php";
-     }
-     if ($modulo == "productos_admin")
-     {
-       include "productos.php";
-     }
-     if ($modulo == "editarproducto")
-     {
-       include "editarproducto.php";
-     }
-     if ($modulo == "crearproductos")
-     {
-       include "crearproductos.php";
-     } 
-     if ($modulo == "eliminarproducto")
-     {
-       include "eliminarproducto.php";
-     }
-     if ($modulo == "subirfoto")
-     {
-       include "subirfoto.php";
-     }
-     if ($modulo == "eliminarfoto")
-     {
-       include "eliminarfoto.php";
-     }
-  
-   ?>
+    if ($modulo == "estadisticas") {
+      include "estadisticas.php";
+    }
+    if ($modulo == "usuarios") {
+      include "usuarios.php";
+    }
+    if ($modulo == "crearusuario") {
+      include "crearusuario.php";
+    }
+    if ($modulo == "editarusuario") {
+      include "editarusuario.php";
+    }
+    if ($modulo == "eliminarusuario") {
+      include "eliminarusuario.php";
+    }
+    if ($modulo == "productos") {
+      include "productos.php";
+    }
+    if ($modulo == "crearproductos") {
+      include "crearproductos.php";
+    }
+    if ($modulo == "eliminarproducto") {
+      include "eliminarproducto.php";
+    }
+    if ($modulo == "editarproducto") {
+      include "editarproducto.php";
+    }
+    if ($modulo == "ventas") {
+      include "ventas.php";
+    }
+    if ($modulo == "detalleventa") {
+      include "detalleventa.php";
+    }
+    if ($modulo == "clientes") {
+      include "clientes.php";
+    }
+    if ($modulo == "crearclientes") {
+      include "crearclientes.php";
+    }
+    if ($modulo == "editarclientes") {
+      include "editarclientes.php";
+    }
+    if ($modulo == "eliminarclientes") {
+      include "eliminarclientes.php";
+    }
+    if ($modulo == "ficha") {
+      include "ficha.php";
+    }
+    if ($modulo == "contacto") {
+      include "contacto.php";
+    }
+    if ($modulo == "crearcontacto") {
+      include "crearcontacto.php";
+    }
+    if ($modulo == "editarcontacto") {
+      include "editarcontacto.php";
+    }
+    if ($modulo == "eliminarcontacto") {
+      include "eliminarcontacto.php";
+    }
+    if ($modulo == "perfil") {
+      include "./perfil2.php";
+    }
+
+
+    ?>
 
 
 
     <!-- /.content-wrapper -->
     <footer class="main-footer">
-      <strong>Copyright &copy; 2022 <a href="#">Constantino Lantigua</a>.</strong>
+      <strong>Copyright &copy; 2025 <a href="#">Constantino Lantigua</a>.</strong>
       Todos derechos reservados.
       <div class="float-right d-none d-sm-inline-block">
         <b>Version</b> 3.2.0

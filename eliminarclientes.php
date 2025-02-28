@@ -1,6 +1,6 @@
 
 <?php
-include_once "db_connect.php";
+include_once "db_ecommerce.php";
 $conexion = mysqli_connect($db_host, $db_user, $db_pass, $db_database);
 if ($conexion->connect_errno) {
   die("<p>Error de conexión Nº: $conexion->connect_errno - $conexion->connect_error</p>\n</body>\n</html>");
@@ -60,17 +60,17 @@ if (!$row) {?>
               <form method="post" action="panel.php">
                 <input type="hidden" name="id" value="<?php print $row["id"]; ?>">
                 <div class="form-group">
-                  <label for="email"><?php print $row["email"]; ?></label>
-                 <!--  <input type="email" name="email" class="form-control"  value="<?php print $row["email"]; ?>" readonly> -->
+                  <label for="email">Email</label>
+                  <input type="email" name="email" class="form-control"  value="<?php print $row["email"]; ?>" readonly>
                 </div>
                 <div class="form-group">
-                  <label for="nombre"><?php print $row["nombre"]; ?></label>
-                  <!-- <input type="text" name="nombre" class="form-control"  value="<?php print $row["nombre"]; ?>" readonly> -->
+                  <label for="nombre">Nombre</label>
+                  <input type="text" name="nombre" class="form-control"  value="<?php print $row["nombre"]; ?>" readonly>
                 </div>
                 <div class="form-group">
                   <input type="hidden" name="modulo" value="eliminarclientes">
                   <button type="submit" name="eliminarclientes" class="btn btn-danger">Eliminar</button>
-                  <a class="btn btn-warning" href="clientes.php?modulo=usuarios&mensaje=operación cancelada por el usuario." role="button">Cancelar</a>
+                  <a class="btn btn-warning" href="panel.php?modulo=clientes" role="button">Cancelar</a>
                 </div>
               </form>
             </div>

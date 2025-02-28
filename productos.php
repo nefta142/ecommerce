@@ -40,7 +40,7 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <table id="tablaproductos" class="table table-bordered table-striped">
+                <table id="tablaproductos" class="table table-bordered table-hover">
                   <thead>
                     <tr>
                       <th>Nombre</th>
@@ -53,7 +53,7 @@
                   </thead>
                   <tbody>
                     <?php
-                    include_once "db_connect.php";
+                    include_once "db_ecommerce.php";
                     $conexion = mysqli_connect($db_host, $db_user, $db_pass, $db_database);
                     if ($conexion->connect_errno) {
                       die("<p>Error de conexión Nº: $conexion->connect_errno - $conexion->connect_error</p>\n</body>\n</html>");
@@ -69,16 +69,16 @@
                     while ($row = mysqli_fetch_assoc($resultset)) {
                     ?>
                       <tr>
-                      <?php $id =$row["id"];
-                            $foto =$row["imagen"];?>
+                      <?php $id =$row["id"] ?>
                         <td><?php print $row["nombre"] ?></td>
                         <td><?php print $row["descripcion"] ?></td>
                         <td style="text-align: end;"><?php print number_format($row["precio"], 2, ".", ",")?> €</td>
                         <td style="text-align: end;"><?php print $row["existencias"] ?></td>
-                       
-                        <td style="text-align: center;"><a href="panel.php?modulo=subirfoto&id=<?php print $row["id"] ?>"><img src="./img/<?php print $row["imagen"] ?>" width="50px" height="50px" ></a></td>                        
+                        
+                        <td style="text-align: center;"><a href="panel.php?modulo=ficha&id=<?php print $row["id"] ?>"><img src="./img/<?php print $row["imagen"] ?>" width="50px" height="50px" ></a></td>
+                        
                         <td>
-                          <a href="panel.php?modulo=editarproducto&id=<?php print $id ?>"><i class="fas fa-edit mr-2"></i></a> 
+                          <a href="panel.php?modulo=editarproducto&id=<?php print $row["id"] ?>"><i class="fas fa-edit mr-2"></i></a> 
                           <?php if($_SESSION["tipo"]=="administrador")  {  ?>
                           <a href="panel.php?modulo=eliminarproducto&id=<?php print $row["id"] ?>"> <i class="fas fa-trash"></i></a>
                           <?php  } ?>

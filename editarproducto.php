@@ -1,6 +1,6 @@
 
 <?php
-include_once "db_connect.php";
+include_once "db_ecommerce.php";
 $conexion = mysqli_connect($db_host, $db_user, $db_pass, $db_database);
 if ($conexion->connect_errno) {
   die("<p>Error de conexión Nº: $conexion->connect_errno - $conexion->connect_error</p>\n</body>\n</html>");
@@ -87,9 +87,9 @@ if (!$row) {?>
                 </div>
                 <div class="form-group">
                   <button type="submit" name="actualizar" class="btn btn-primary">Actualizar</button>
-                  <a class="btn btn-warning" href="panel.php?modulo=productos" role="button">Cancelar</a>
+                  <a class="btn btn-danger" href="panel.php?modulo=productos" role="button">Cancelar</a>
                 </div>
-        </form> 
+           <!--   </form> -->
             </div>
             
           </div>
@@ -101,8 +101,6 @@ if (!$row) {?>
       <!-- /.row -->
     </div>
     <!-- /.container-fluid -->
-    <div class="card-body">
-    
     <div class="row">
                   <?php
                   $query = "SELECT * FROM fotos WHERE idproducto=" . $row["id"];
@@ -113,15 +111,20 @@ if (!$row) {?>
                       <img class="card-img-top img-thumbnail" src="img/<?php print $row["nombre"] ?>" alt="">
                       <div class="card-body">
                         <h4 class="card-title mr-2"><?php print $row["nombre"] ?></h4>
-                        <a href="panel.php?modulo=eliminarfoto&id=<?php print $row["id"]?>"><i class="fas fa-trash"></i></a>
+                        <a href="panel.php?modulo=eliminarfoto&id=<?php print $row["id"] ?>"><i class="fas fa-trash"></i></a>
                       </div>
                     </div>
                   <?php } ?>
                 </div>
-             
                 <div class="form-group">
-                <a href="panel.php?modulo=subirfoto&id=<?php print $id?>"><button  class="btn btn-primary">Añadir Imagen</button></a>
+                  <label for="foto">Foto</label>
+                  <input type="file" name="foto[]" class="form-control" multiple>
                 </div>
+                <div class="form-group">
+                  <button type="submit" name="actualizar" class="btn btn-primary">Actualizar</button>
+                  <a class="btn btn-danger" href="panel.php?modulo=productos" role="button">Cancelar</a>
+                </div>
+              </form>
             </div>
 
   </section>

@@ -1,41 +1,42 @@
 
 <?php
-if ( isset($_SESSION["id"]) == false )
-{
-  header("location: index.php");
-}
-//Comprobamos el módulo seleccionado o lo inicializamos vacío si venimos del login
-if (isset($_REQUEST["modulo"]))
-{
-  $modulo = $_REQUEST["modulo"];
-}
-else
-{
-  //Aplicamos el módulo por defecto
-  $modulo = "estadisticas";
-} 
-include_once "db_connect.php";
+include_once "db_ecommerce.php";
 $conexion = mysqli_connect($db_host, $db_user, $db_pass, $db_database);
 if ($conexion->connect_errno) {
-  die("<p>Error de conexión Nº: $conexion->connect_errno - $conexion->connect_error</p>\n</body>\n</html>");  }
-else{
+  die("<p>Error de conexión Nº: $conexion->connect_errno - $conexion->connect_error</p>\n</body>\n</html>");
+}
+$id = sanitizar($conexion, $_REQUEST["id"]);
+
 if (isset($_REQUEST["actualizar"])) {
   $nombre = sanitizar($conexion, $_REQUEST["nombre"]);
   $email = sanitizar($conexion, $_REQUEST["email"]);
-  $clave = sanitizar($conexion, $_REQUEST["clave"]);
   $tipo = sanitizar($conexion, $_REQUEST["tipo"]);
+  $clave = sanitizar($conexion, $_REQUEST["clave"]);
   $clave = md5($clave);
-  $id = sanitizar($conexion, $_REQUEST["id"]);
-  $query = "UPDATE `usuarios` SET `nombre`='$nombre',`email`='$email',`clave`='$clave', `tipo`='$tipo' WHERE `id`='$id'";
-   mysqli_query($conexion, $query);
-        if ($conexion->connect_errno) {
-          die("<p>Error de conexión Nº: $conexion->connect_errno - $conexion->connect_error</p>\n</body>\n</html>");
-        }
-        else {
-          print "<meta http-equiv=\"refresh\" content=\"0; url=panel.php?modulo=usuarios&mensaje=Usuario actualizado exitosamente\" />  ";}
-        } 
-     }
+  $query = "UPDATE usuarios SET nombre=\"$nombre\", email=\"$email\", clave=\"$clave\", tipo=\"$tipo\"
+  WHERE id=\"$id\";";
+  $resultset = mysqli_query($conexion, $query);
 
+  if ($resultset) {
+    //Actualizamos el nombre del usuario en la sesión si es el usuario actual
+    if ($_SESSION["id"] == $id) $_SESSION["nombre"] = $nombre; 
+
+    print "<meta http-equiv=\"refresh\" content=\"0; url=panel.php?modulo=usuarios&mensaje=El usuario $nombre se actualizado exitosamente\" />  ";
+  } else { ?>
+    <div class="alert alert-danger float-right" role="alert">
+      <strong>Atención! no se ha actualizado el usuario <?php print mysqli_error($conexion) ?> </strong>
+    </div>
+<?php }
+}
+
+$query = "SELECT * FROM usuarios WHERE id=$id";
+$resultset = mysqli_query($conexion, $query);
+$row = mysqli_fetch_assoc($resultset);
+if (!$row) {?>
+  <div class="alert alert-danger float-right" role="alert">
+    <strong>Atención! la consulta ha fallado <?php print mysqli_error($con) ?> </strong>
+  </div>
+<?php } 
 ?>
 
 <!-- Content Wrapper. Contains page content -->
@@ -64,49 +65,28 @@ if (isset($_REQUEST["actualizar"])) {
               <h3 class="card-title">Editar usuario del ecommerce</h3>
             </div>
             <!-- /.card-header -->
-            <?php 
-            include_once "db_connect.php";
-            
-          $id = sanitizar($conexion, $_REQUEST["id"]);        
-          $query = "select * from `usuarios` WHERE `id`= $id";
-          mysqli_query($conexion, $query);
-          if ($conexion->connect_errno) {
-        die("<p>Error de conexión Nº: $conexion->connect_errno - $conexion->connect_error</p>\n</body>\n</html>");
-           }
-        $resultset = mysqli_query($conexion, $query);
-        $row = mysqli_fetch_assoc($resultset);
-        $id = sanitizar($conexion,$row["id"]);
-        //print $id;
-        $nombre = sanitizar($conexion, $row["nombre"]);
-        //print $nombre;
-        $email = sanitizar($conexion, $row["email"]);
-        $clave = sanitizar($conexion, $row["clave"]);
-        $clave = md5($clave);
-        $id = sanitizar($conexion, $row["id"]); ?>
             <div class="card-body">
               <form method="post" action="panel.php?modulo=editarusuario">
+                <input type="hidden" name="id" value="<?php print $row["id"]; ?>">
                 <div class="form-group">
                   <label for="email">Email</label>
-                  <input type="email" name="email" class="form-control" value="<?php print "$email"; ?>" required>
+                  <input type="email" name="email" class="form-control" required value="<?php print $row["email"]; ?>">
                 </div>
                 <div class="form-group">
                   <label for="clave">Clave</label>
-                  <input type="password" name="clave" class="form-control" value="<?php print "$clave"; ?>" required >
+                  <input type="password" name="clave" class="form-control" required>
                 </div>
                 <div class="form-group">
                   <label for="nombre">Nombre</label>
-                  <input type="text" name="nombre" class="form-control" value="<?php print "$nombre";  ?>" required>
+                  <input type="text" name="nombre" class="form-control" required value="<?php print $row["nombre"]; ?>">
                 </div>
-                <input type="hidden" name="id" class="form-control" value="<?php print "$id";  ?>" >
                 <div class="form-group">
-                <div class="form-group">
-                <div class="form-group">
-                <input type="radio" name="tipo" value="empleado" checked> Empleado<br>
-                <input type="radio" name="tipo" value="administrador"> Administrador<br>
+                <input type="radio" name="tipo" value="empleado" <?php if($row["tipo"]=="empleado")  {  ?>checked <?php  } ?>> Empleado<br>
+                <input type="radio" name="tipo" value="administrador" <?php if($row["tipo"]=="administrador")  {  ?>checked <?php  } ?>> Administrador<br>
                 </div>
                 <div class="form-group">
                   <button type="submit" name="actualizar" class="btn btn-primary">Actualizar</button>
-                  <a class="btn btn-danger" href="panel.php?modulo=usuarios&mensaje=operación cancelada por el usuario." role="button">Cancelar</a>
+                  <a class="btn btn-danger" href="panel.php?modulo=usuarios" role="button">Cancelar</a>
                 </div>
               </form>
             </div>

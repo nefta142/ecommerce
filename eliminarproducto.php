@@ -1,6 +1,6 @@
 
 <?php
-include_once "db_connect.php";
+include_once "db_ecommerce.php";
 $conexion = mysqli_connect($db_host, $db_user, $db_pass, $db_database);
 if ($conexion->connect_errno) {
   die("<p>Error de conexión Nº: $conexion->connect_errno - $conexion->connect_error</p>\n</body>\n</html>");

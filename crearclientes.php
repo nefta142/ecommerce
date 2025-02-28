@@ -1,48 +1,6 @@
 <?php
-if ( isset($_SESSION["id"]) == false )
-{
-  header("location: index.php");
-}
-//Comprobamos el módulo seleccionado o lo inicializamos vacío si venimos del login
-if (isset($_REQUEST["modulo"]))
-{
-  $modulo = $_REQUEST["modulo"];
-}
-else
-{
-  //Aplicamos el módulo por defecto
-  $modulo = "estadisticas";
-} 
-
-if ( isset($_SESSION["id"]) == false )
-{
-  header("location: index.php");
-}
-//Comprobamos el módulo seleccionado o lo inicializamos vacío si venimos del login
-if (isset($_REQUEST["modulo"]))
-{
-  $modulo = $_REQUEST["modulo"];
-}
-else
-{
-  //Aplicamos el módulo por defecto
-  $modulo = "estadisticas";
-} 
-if (isset($_REQUEST["mensaje"]))
-{?>
-<!-- lanzamos el mensaje si existe -->
-  <div class="alert alert-success alert-dismissible fade show float-right" role="alert">
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
-    <strong><?php print $_REQUEST["mensaje"] ?></strong> 
-  </div>
- <script>
-    $(".alert").alert();
-  </script>
-<?php } 
 if (isset($_REQUEST["guardar"])) {
-  include_once "db_connect.php";
+  include_once "db_ecommerce.php";
   $conexion = mysqli_connect($db_host, $db_user, $db_pass, $db_database);
   if ($conexion->connect_errno) {
     die("<p>Error de conexión Nº: $conexion->connect_errno - $conexion->connect_error</p>\n</body>\n</html>");
@@ -53,19 +11,22 @@ if (isset($_REQUEST["guardar"])) {
   $clave = sanitizar($conexion, $_REQUEST["clave"]);
   $dni = sanitizar($conexion, $_REQUEST["dni"]);
   $direccion = sanitizar($conexion, $_REQUEST["direccion"]);
-
   $clave = md5($clave);
-  $query = "INSERT INTO clientes (nombre, apellido, email, clave, dni, direccion ) VALUES (\"$nombre\", \"$apellido\", \"$email\", \"$clave\", \"$dni\", \"$direccion\")";
+  $query = "INSERT INTO clientes (nombre, apellido, email, clave, dni, direccion) VALUES (\"$nombre\", \"$apellido\", \"$email\", \"$clave\", \"$dni\", \"$direccion\")";
   $resultset = mysqli_query($conexion, $query);
+  if ($conexion->connect_errno) {
+    die("<p>Error de conexión Nº: $conexion->connect_errno - $conexion->connect_error</p>\n</body>\n</html>");
+  }
+
   if ($resultset)
   {
-    print "<meta http-equiv=\"refresh\" content=\"0; url=panel.php?modulo=clientes&mensaje=
- Cliente creado exitosamente\" />";
+    print "<meta http-equiv=\"refresh\" content=\"0; url=panel.php?modulo=clientes&mensaje=Cliente creado exitosamente\" />  ";
+    //header("location: panel.php?modulo=clientes&mensaje=Cliente creado exitosamente ");
   }
   else
   {?>
     <div class="alert alert-danger float-right" role="alert">
-      <strong>Atención! no se ha creado el cliente, El correo electronico ya esta en nuestra base de datos.<?php print mysqli_error($con) ?> </strong>
+      <strong>Atención! no se ha creado el cliente <?php print mysqli_error($conexion) ?> </strong>
     </div>
 <?php }
 }
@@ -78,7 +39,7 @@ if (isset($_REQUEST["guardar"])) {
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1><i class="fas fa-user-plus    "></i> Crear Clientes</h1>
+          <h1><i class="fas fa-user-plus    "></i> Crear Cliente</h1>
           <script>
             $(".alert").alert();
           </script>
@@ -98,31 +59,33 @@ if (isset($_REQUEST["guardar"])) {
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-              <form method="post" action="panel.php?modulo=crearclientes">
-                <div class="form-group">
-                  <label for="nombre">Nombre</label>
+              <form method="get" action="panel.php">
+              <div class="form-group">
+                  <label for="nombre">Nombre:</label>
                   <input type="text" name="nombre" class="form-control"  value="" required>
                 </div>
                 <div class="form-group">
-                  <label for="apellido">apellido</label>
+                  <label for="apellido">Apellido:</label>
                   <input type="text" name="apellido" class="form-control"  value="" required>
                 </div>
                 <div class="form-group">
-                  <label for="email">Email</label>
+                  <label for="email">Email:</label>
                   <input type="email" name="email" class="form-control" value="" required>
                 </div>
                 <div class="form-group">
-                  <label for="clave">Clave</label>
+                  <label for="clave">Clave: </label>
                   <input type="password" name="clave" class="form-control"  value="" required>
                 </div>
                 <div class="form-group">
-                  <label for="dni">DNI</label>
+                  <label for="nombre">DNI o NIE: </label>
                   <input type="text" name="dni" class="form-control"  value="" required>
                 </div>
                 <div class="form-group">
-                  <label for="direccion">Direccion</label>
+                  <label for="nombre">direcci&oacute;n</label>
                   <input type="text" name="direccion" class="form-control"  value="" required>
                 </div>
+                <div class="form-group">
+                  <input type="hidden" name="modulo" value="crearclientes">
                   <button type="submit" name="guardar" class="btn btn-primary">Guardar</button>
                   <a class="btn btn-danger" href="panel.php?modulo=clientes" role="button">Cancelar</a>
                 </div>
@@ -141,3 +104,5 @@ if (isset($_REQUEST["guardar"])) {
   </section>
   <!-- /.content -->
 </div>
+
+

@@ -1,20 +1,6 @@
 
 <?php
-if ( isset($_SESSION["id"]) == false )
-{
-  header("location: index.php");
-}
-//Comprobamos el módulo seleccionado o lo inicializamos vacío si venimos del login
-if (isset($_REQUEST["modulo"]))
-{
-  $modulo = $_REQUEST["modulo"];
-}
-else
-{
-  //Aplicamos el módulo por defecto
-  $modulo = "estadisticas";
-} 
-include_once "db_connect.php";
+include_once "db_ecommerce.php";
 $conexion = mysqli_connect($db_host, $db_user, $db_pass, $db_database);
 if ($conexion->connect_errno) {
   die("<p>Error de conexión Nº: $conexion->connect_errno - $conexion->connect_error</p>\n</body>\n</html>");
@@ -83,7 +69,7 @@ if (!$row) {?>
                 </div>
                 <div class="form-group">
                   <button type="submit" name="eliminarusuario" class="btn btn-danger">Eliminar</button>
-                  <a class="btn btn-warning" href="panel.php?modulo=usuarios&mensaje=operación cancelada por el usuario." role="button">Cancelar</a>
+                  <a class="btn btn-warning" href="panel.php?modulo=usuarios" role="button">Cancelar</a>
                 </div>
               </form>
             </div>

@@ -1,45 +1,29 @@
-  <!-- PRÁCTICA: -->
-  <?php
 
-  if ( isset($_SESSION["id"]) == false )
-  {
-    header("location: index.php");
-  }
-  //Comprobamos el módulo seleccionado o lo inicializamos vacío si venimos del login
-  if (isset($_REQUEST["modulo"]))
-  {
-    $modulo = $_REQUEST["modulo"];
-  }
-  else
-  {
-    //Aplicamos el módulo por defecto
-    $modulo = "estadisticas";
-  } 
-  if (isset($_REQUEST["mensaje"]))
-  {?>
-  <!-- lanzamos el mensaje si existe -->
-    <div class="alert alert-success alert-dismissible fade show float-right" role="alert">
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-      <strong><?php print $_REQUEST["mensaje"] ?></strong> 
-    </div>
-   <script>
-      $(".alert").alert();
-    </script>
-  <?php } ?>
+    <?php 
+    if (isset ($_REQUEST["msg" ])){
+        $msg = $_REQUEST["msg" ];
+        echo '<div class="alert alert-warning alert-dismissible fade show" role="alert"><h3>'.$msg.'</h3>';
+        echo '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+
+    } 
+    ?>
+
+    </div>   
+</div>
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <div class="container-fluid"><!-- container-fluid -->
+      <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
             <h1><i class="fas fa-user    "></i> Usuarios</h1>
-     
-          </div>
+            <script>
+              $(".alert").alert();
+            </script>
         </div>
-      </div><!-- /.container-fluid -->
+      </div>
+      <!-- /.container-fluid -->
     </section>
 
     <!-- Main content -->
@@ -58,17 +42,18 @@
                     <tr>
                       <th>Nombre</th>
                       <th>Email</th>
+                      <th>Tipo</th>
                       <th>Acciones <a href="panel.php?modulo=crearusuario"> <i class="fas fa-plus ml-2"></i></a></th>
                     </tr>
                   </thead>
                   <tbody>
                     <?php
-                    include_once "db_connect.php";
+                    include_once "db_ecommerce.php";
                     $conexion = mysqli_connect($db_host, $db_user, $db_pass, $db_database);
                     if ($conexion->connect_errno) {
                       die("<p>Error de conexión Nº: $conexion->connect_errno - $conexion->connect_error</p>\n</body>\n</html>");
                     }
-                    $query = "select id, nombre, email from usuarios";
+                    $query = "select * from usuarios";
                     $resultset = mysqli_query($conexion, $query);
 
                     if ($conexion->errno) {
@@ -80,7 +65,9 @@
                       <tr>
                         <td><?php print $row["nombre"] ?></td>
                         <td><?php print $row["email"] ?></td>
-                        <td><a href="panel.php?modulo=editarusuario&id=<?php print $row["id"] ?> "> <i class="fas fa-edit mr-2"></i></a> <a href="panel.php?modulo=eliminarusuario&id=<?php print $row["id"] ?>"> <i class="fas fa-trash"></i></a></td>
+                        <td><?php print $row["tipo"] ?></td>
+                        <td>
+                          <a href="panel.php?modulo=editarusuario&id=<?php print $row["id"] ?>"><i class="fas fa-edit mr-2"></i></a> <a href="panel.php?modulo=eliminarusuario&id=<?php print $row["id"] ?>"> <i class="fas fa-trash"></i></a></td>
                       </tr>
                     <?php
                     }
@@ -89,9 +76,16 @@
                   </tbody>
                 </table>
               </div>
+              <!-- /.card-body -->
             </div>
+            <!-- /.card -->
+            <!-- /.card -->
           </div>
+          <!-- /.col -->
         </div>
+        <!-- /.row -->
       </div>
+      <!-- /.container-fluid -->
     </section>
+    <!-- /.content -->
   </div>
